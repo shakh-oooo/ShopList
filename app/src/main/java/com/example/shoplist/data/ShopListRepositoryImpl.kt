@@ -1,11 +1,15 @@
 package com.example.shoplist.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.shoplist.domain.ShopList
 import com.example.shoplist.domain.ShopListRepository
 
 object ShopListRepositoryImpl : ShopListRepository {
 
     private var shopList = mutableListOf<ShopList>()
+
+    private val listLD = MutableLiveData<List<ShopList>>()
 
     private var idd = 0
 
@@ -15,10 +19,12 @@ object ShopListRepositoryImpl : ShopListRepository {
         }
 
         shopList.add(shopItem)
+        update()
     }
 
     override fun deleteShopItem(shopItem: ShopList) {
         shopList.remove(shopItem)
+        update()
     }
 
     override fun editShopItem(shopItem: ShopList) {
@@ -32,7 +38,11 @@ object ShopListRepositoryImpl : ShopListRepository {
             ?: throw java.lang.RuntimeException("not found")
     }
 
-    override fun getShopList(): List<ShopList> {
-        return shopList.toList()
+    override fun getShopList(): LiveData<List<ShopList>> {
+        return listLD
+    }
+
+    private fun update(){
+        listLD.value = shopList.toList()
     }
 }
