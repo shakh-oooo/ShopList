@@ -6,6 +6,7 @@ import com.example.shoplist.domain.ShopList
 import com.example.shoplist.domain.usecases.GetShopListUseCase
 import com.example.shoplist.domain.usecases.items.DeleteShopItemUseCase
 import com.example.shoplist.domain.usecases.items.EditShopItemUseCase
+import com.example.shoplist.domain.usecases.items.GetShopItemUseCase
 
 class MainViewModel : ViewModel() {
 
@@ -19,18 +20,13 @@ class MainViewModel : ViewModel() {
     val shopList = getShopListUseCase.getShopList()
 
 
-    /* fun getShopList() {
-         val list = getShopListUseCase.getShopList()
-         shopList.value = list
- //дает нам список, мы сохряняем данные на лайв дату , что б в дальнейшем получать список , когда мы на него подпишемся
-     }*/
 
     fun delete(shopList: ShopList) {
         deleteShopItemUseCase.deleteShopItem(shopList)
         //удаляет данные функция delete принимает лист (его данные) потом передает на реалезацию (на удаление)
     }
 
-    fun edit(shopList: ShopList) {
+    fun editTrueFalse(shopList: ShopList) {
         val new = shopList.copy(enabled = !shopList.enabled)
         editShopItemUseCase.editShopItem(new)
         //изменятет true false перемменя New равна копии отрицательную Enabled тоист если нам приходить true он всегда будет false
